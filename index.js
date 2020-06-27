@@ -1,17 +1,16 @@
 const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
-// const http = require('request');
 const axios = require('axios');
+// const http = require('request');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static('./public'));
 
 app.get('/', (req, res) => {
   res.send('Server works');
-  console.log('Working')
+  console.log('Working');
 });
 
 app.post('/submit', async (req, res, next) => {
@@ -33,14 +32,15 @@ app.post('/submit', async (req, res, next) => {
 
     msg = encodeURI(msg);
 
-    const response = await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage?chat_id=${process.env.CHAT_ID}&parse_mode=html&text=${msg}`);
+    const response = await axios.post(
+      `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage?chat_id=${process.env.CHAT_ID}&parse_mode=html&text=${msg}`
+    );
     if (response.status === 200) {
       res.status(200).json({ status: 'ok', message: 'Успешно отправлено!' });
     } else {
       res.status(400).json({
         status: 'error',
-        message:
-          'Произошла ошибка! Попробуйте еще раз или перезвоните нам.',
+        message: 'Произошла ошибка! Попробуйте еще раз или перезвоните нам.',
       });
     }
 
