@@ -9,12 +9,10 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Server works');
-  console.log('Working');
+  res.send(process.env.CHAT_ID);
 });
 
 app.post('/submit', async (req, res, next) => {
-  console.log('req.body: ', req.body);
   try {
     const fields = [
       '<b>Имя</b>: ' + req.body.name,
