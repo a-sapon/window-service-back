@@ -1,0 +1,17 @@
+{
+  "name": "window-service-back",
+  "version": "1.0.0",
+  "description": "window-service backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Anna_Sapon <sapon.anya@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "request": "^2.88.2"
+  }
+}
