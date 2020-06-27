@@ -1,7 +1,8 @@
 const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
-const http = require('request');
+// const http = require('request');
+const axios = require('axios');
 
 const app = express();
 app.use(cors());
@@ -13,7 +14,7 @@ app.get('/', (req, res) => {
   console.log('Working')
 });
 
-app.post('/telegram', (req, res, next) => {
+app.post('/telegram', async (req, res, next) => {
   console.log('req.body: ', req.body);
   try {
     const fields = [
@@ -32,28 +33,39 @@ app.post('/telegram', (req, res, next) => {
 
     msg = encodeURI(msg);
 
-    http.post(
-      `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage?chat_id=${process.env.CHAT_ID}&parse_mode=html&text=${msg}`,
-      function (error, response, body) {
-        console.log('error:', error);
-        console.log('statusCode:', response && response.statusCode);
-        console.log('body:', body);
-        if (response.statusCode === 200) {
-          res
-            .status(200)
-            .json({ status: 'ok', message: 'Успешно отправлено!' });
-        }
-        if (response.statusCode !== 200) {
-          res
-            .status(400)
-            .json({
-              status: 'error',
-              message:
-                'Произошла ошибка! Попробуйте еще раз или перезвоните нам.',
-            });
-        }
-      }
-    );
+    const response = await axios.post(`https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage?chat_id=${process.env.CHAT_ID}&parse_mode=html&text=${msg}`);
+    if (response.status === 200) {
+      res.status(200).json({ status: 'ok', message: 'Успешно отправлено!' });
+    } else {
+      res.status(400).json({
+        status: 'error',
+        message:
+          'Произошла ошибка! Попробуйте еще раз или перезвоните нам.',
+      });
+    }
+
+    // http.post(
+    //   `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage?chat_id=${process.env.CHAT_ID}&parse_mode=html&text=${msg}`,
+    //   function (error, response, body) {
+    //     console.log('error:', error);
+    //     console.log('statusCode:', response && response.statusCode);
+    //     console.log('body:', body);
+    //     if (response.statusCode === 200) {
+    //       res
+    //         .status(200)
+    //         .json({ status: 'ok', message: 'Успешно отправлено!' });
+    //     }
+    //     if (response.statusCode !== 200) {
+    //       res
+    //         .status(400)
+    //         .json({
+    //           status: 'error',
+    //           message:
+    //             'Произошла ошибка! Попробуйте еще раз или перезвоните нам.',
+    //         });
+    //     }
+    //   }
+    // );
   } catch (err) {
     next(err);
   }
