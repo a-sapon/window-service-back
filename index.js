@@ -8,6 +8,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('./public'));
 
+app.get('/', (req, res) => {
+  res.send('Server works');
+  console.log('Working')
+});
+
 app.post('/telegram', (req, res, next) => {
   console.log('req.body: ', req.body);
   try {
