@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
   console.log('Working')
 });
 
-app.post('/telegram', async (req, res, next) => {
+app.post('/submit', async (req, res, next) => {
   console.log('req.body: ', req.body);
   try {
     const fields = [
