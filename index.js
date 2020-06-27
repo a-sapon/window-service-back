@@ -2,17 +2,16 @@ const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
 const axios = require('axios');
-// const http = require('request');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send(process.env.CHAT_ID);
+  res.send('Server works');
 });
 
-app.post('/submit', async (req, res, next) => {
+app.post('/telegram', async (req, res, next) => {
   try {
     const fields = [
       '<b>Имя</b>: ' + req.body.name,
@@ -41,29 +40,6 @@ app.post('/submit', async (req, res, next) => {
         message: 'Произошла ошибка! Попробуйте еще раз или перезвоните нам.',
       });
     }
-
-    // http.post(
-    //   `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage?chat_id=${process.env.CHAT_ID}&parse_mode=html&text=${msg}`,
-    //   function (error, response, body) {
-    //     console.log('error:', error);
-    //     console.log('statusCode:', response && response.statusCode);
-    //     console.log('body:', body);
-    //     if (response.statusCode === 200) {
-    //       res
-    //         .status(200)
-    //         .json({ status: 'ok', message: 'Успешно отправлено!' });
-    //     }
-    //     if (response.statusCode !== 200) {
-    //       res
-    //         .status(400)
-    //         .json({
-    //           status: 'error',
-    //           message:
-    //             'Произошла ошибка! Попробуйте еще раз или перезвоните нам.',
-    //         });
-    //     }
-    //   }
-    // );
   } catch (err) {
     next(err);
   }
